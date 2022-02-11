@@ -113,6 +113,15 @@ func attack_effect() -> void:
 		if body.has_method('destroy'):
 			body.destroy()
 	
+func _interaction_attempt() -> bool:
+	var bodies_array = attack_hitbox.get_overlapping_bodies()
+	
+	for body in bodies_array:
+		if body.has_method('interact'):
+			body.interact()
+			return true
+	
+	return false
 
 #### SIGNAL RESPONSES ####
 
@@ -122,6 +131,9 @@ func _on_AnimatedSprite_animation_finished():
 		
 
 func _on_state_changed():
+	if state == STATE.ATTACK:
+		if _interaction_attempt():
+			set_state(STATE.IDLE)
 	_update_animation()
 
 
