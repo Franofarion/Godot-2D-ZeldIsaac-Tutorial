@@ -1,15 +1,7 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://Scenes/Character/Sprites/Character_SpriteSheet.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Character/Character.gd" type="Script" id=2]
-
-[sub_resource type="AtlasTexture" id=31]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 64, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=32]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 192, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 1 )
@@ -75,6 +67,14 @@ region = Rect2( 128, 64, 64, 64 )
 atlas = ExtResource( 1 )
 region = Rect2( 192, 64, 64, 64 )
 
+[sub_resource type="AtlasTexture" id=31]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 64, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=32]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 192, 64, 64 )
+
 [sub_resource type="AtlasTexture" id=33]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 64, 64 )
@@ -133,16 +133,6 @@ region = Rect2( 0, 128, 64, 64 )
 
 [sub_resource type="SpriteFrames" id=18]
 animations = [ {
-"frames": [ SubResource( 31 ) ],
-"loop": true,
-"name": "IdleUp",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 32 ) ],
-"loop": true,
-"name": "IdleLeft",
-"speed": 5.0
-}, {
 "frames": [ SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ) ],
 "loop": true,
 "name": "MoveDown",
@@ -162,6 +152,16 @@ animations = [ {
 "loop": true,
 "name": "MoveUp",
 "speed": 8.0
+}, {
+"frames": [ SubResource( 31 ) ],
+"loop": true,
+"name": "IdleUp",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 32 ) ],
+"loop": true,
+"name": "IdleLeft",
+"speed": 5.0
 }, {
 "frames": [ SubResource( 33 ) ],
 "loop": true,
@@ -197,6 +197,9 @@ animations = [ {
 [sub_resource type="CircleShape2D" id=1]
 radius = 12.3693
 
+[sub_resource type="RectangleShape2D" id=35]
+extents = Vector2( 22.875, 10 )
+
 [node name="Character" type="KinematicBody2D"]
 script = ExtResource( 2 )
 __meta__ = {
@@ -205,7 +208,7 @@ __meta__ = {
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 18 )
-animation = "IdleLeft"
+animation = "IdleDown"
 __meta__ = {
 "_edit_lock_": true
 }
@@ -216,7 +219,20 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="AttackHitbox" type="Area2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox"]
+position = Vector2( 0, 20 )
+shape = SubResource( 35 )
+__meta__ = {
+"_edit_lock_": true
+}
+
 [connection signal="facing_direction_changed" from="." to="." method="_on_facing_direction_changed"]
 [connection signal="moving_direction_changed" from="." to="." method="_on_moving_direction_changed"]
 [connection signal="state_changed" from="." to="." method="_on_state_changed"]
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
+[connection signal="frame_changed" from="AnimatedSprite" to="." method="_on_AnimatedSprite_frame_changed"]

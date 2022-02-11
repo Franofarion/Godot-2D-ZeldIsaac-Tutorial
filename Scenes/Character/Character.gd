@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 onready var animated_sprite = get_node("AnimatedSprite")
+onready var attack_hitbox = get_node("AttackHitbox")
 
 enum STATE {
 	IDLE,
@@ -75,7 +76,7 @@ func _input(_event: InputEvent) -> void:
 
 #### LOGIC ####
 
-# Update the animation based on the current state and the facing_direction
+# Update the animation based on the current state and the facing direction
 func _update_animation() -> void:
 	var dir_name = _find_dir_name(facing_direction)
 	var state_name = ''
@@ -86,6 +87,11 @@ func _update_animation() -> void:
 		STATE.ATTACK: state_name = 'Attack'
 	
 	animated_sprite.play(state_name + dir_name)
+
+# Update the rotation of the attack hitbox based on the facing direction
+func _update_attack_hitbox_direction() -> void:
+	var angle = facing_direction.angle()
+	attack_hitbox.set_rotation_degrees(rad2deg(angle) - 90)
 
 # Find the name of the given direction and returns it as a string
 func _find_dir_name(dir: Vector2) -> String:
@@ -100,6 +106,13 @@ func _find_dir_name(dir: Vector2) -> String:
 	
 	return dir_key
 
+func attack_effect() -> void:
+	var bodies_array = attack_hitbox.get_overlapping_bodies()
+	
+	for body in bodies_array:
+		if body.has_method('destroy'):
+			body.destroy()
+	
 
 #### SIGNAL RESPONSES ####
 
@@ -114,6 +127,7 @@ func _on_state_changed():
 
 func _on_facing_direction_changed():
 	_update_animation()
+	_update_attack_hitbox_direction()
 
 
 func _on_moving_direction_changed():
@@ -132,3 +146,8 @@ func _on_moving_direction_changed():
 		else:
 			set_facing_direction(Vector2(sign_dir.x, 0))
 			
+
+func _on_AnimatedSprite_frame_changed():
+	if 'Attack'.is_subsequence_of(animated_sprite.get_animation()):
+		if animated_sprite.get_frame() == 1:
+			attack_effect()
