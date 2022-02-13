@@ -67,17 +67,17 @@ region = Rect2( 128, 64, 64, 64 )
 atlas = ExtResource( 1 )
 region = Rect2( 192, 64, 64, 64 )
 
-[sub_resource type="AtlasTexture" id=31]
+[sub_resource type="AtlasTexture" id=34]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 64, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=32]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 192, 64, 64 )
+region = Rect2( 0, 128, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=33]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=32]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 192, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=28]
 atlas = ExtResource( 1 )
@@ -115,6 +115,10 @@ region = Rect2( 384, 0, 64, 64 )
 atlas = ExtResource( 1 )
 region = Rect2( 448, 0, 64, 64 )
 
+[sub_resource type="AtlasTexture" id=31]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 64, 64, 64 )
+
 [sub_resource type="AtlasTexture" id=25]
 atlas = ExtResource( 1 )
 region = Rect2( 320, 192, 64, 64 )
@@ -126,10 +130,6 @@ region = Rect2( 384, 192, 64, 64 )
 [sub_resource type="AtlasTexture" id=27]
 atlas = ExtResource( 1 )
 region = Rect2( 448, 192, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=34]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 128, 64, 64 )
 
 [sub_resource type="SpriteFrames" id=18]
 animations = [ {
@@ -153,19 +153,19 @@ animations = [ {
 "name": "MoveUp",
 "speed": 8.0
 }, {
-"frames": [ SubResource( 31 ) ],
+"frames": [ SubResource( 34 ) ],
 "loop": true,
-"name": "IdleUp",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 32 ) ],
-"loop": true,
-"name": "IdleLeft",
+"name": "IdleRight",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 33 ) ],
 "loop": true,
 "name": "IdleDown",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 32 ) ],
+"loop": true,
+"name": "IdleLeft",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 28 ), SubResource( 29 ), SubResource( 30 ) ],
@@ -183,15 +183,15 @@ animations = [ {
 "name": "AttackDown",
 "speed": 8.0
 }, {
+"frames": [ SubResource( 31 ) ],
+"loop": true,
+"name": "IdleUp",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 25 ), SubResource( 26 ), SubResource( 27 ) ],
 "loop": false,
 "name": "AttackLeft",
 "speed": 8.0
-}, {
-"frames": [ SubResource( 34 ) ],
-"loop": true,
-"name": "IdleRight",
-"speed": 5.0
 } ]
 
 [sub_resource type="CircleShape2D" id=1]
@@ -230,6 +230,13 @@ shape = SubResource( 35 )
 __meta__ = {
 "_edit_lock_": true
 }
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_enabled = true
+editor_draw_drag_margin = true
 
 [connection signal="facing_direction_changed" from="." to="." method="_on_facing_direction_changed"]
 [connection signal="moving_direction_changed" from="." to="." method="_on_moving_direction_changed"]

@@ -1,9 +1,11 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://Scenes/Character/Character.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Levels/Tilesets/Tileset.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/InteractiveObjects/Jar/Jar.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/InteractiveObjects/Chest/Chest.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Levels/Level.gd" type="Script" id=5]
+[ext_resource path="res://Scenes/InteractiveObjects/Coin/Coin.tscn" type="PackedScene" id=6]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
@@ -434,7 +436,8 @@ points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
 5/shapes = [  ]
 5/z_index = 0
 
-[node name="Level" type="Node2D"]
+[node name="Level" type="YSort"]
+script = ExtResource( 5 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -451,31 +454,29 @@ cell_size = Vector2( 32, 32 )
 format = 1
 tile_data = PoolIntArray( 15, 3, 0, 65538, 2, 0, 65539, 2, 0, 65540, 2, 0, 131075, 2, 0, 131076, 2, 0, 131079, 5, 0, 131080, 5, 0, 131101, 5, 3, 196610, 5, 3, 196615, 5, 0, 262171, 5, 0, 524303, 5, 0, 524304, 5, 0, 589839, 5, 0, 589840, 5, 0, 589847, 5, 0, 851972, 2, 0, 851973, 2, 0, 917507, 2, 0, 917508, 2, 0, 917509, 2, 0, 917521, 5, 0, 983043, 2, 0, 983044, 2, 0, 983045, 2, 0, 983069, 2, 0 )
 
-[node name="Jars" type="Node" parent="."]
-
-[node name="Jar" parent="Jars" instance=ExtResource( 3 )]
-position = Vector2( 688, 368 )
-
-[node name="Jar2" parent="Jars" instance=ExtResource( 3 )]
-position = Vector2( 944, 488 )
-
-[node name="Jar3" parent="Jars" instance=ExtResource( 3 )]
-position = Vector2( 592, 528 )
-
-[node name="Jar4" parent="Jars" instance=ExtResource( 3 )]
-position = Vector2( 528, 528 )
-
-[node name="Jar5" parent="Jars" instance=ExtResource( 3 )]
-position = Vector2( 560, 528 )
-
 [node name="Character" parent="." instance=ExtResource( 1 )]
 position = Vector2( 409, 272 )
-z_index = 1
 
-[node name="Chest" type="Node" parent="."]
+[node name="Jar" parent="." instance=ExtResource( 3 )]
+position = Vector2( 688, 368 )
 
-[node name="Chest" parent="Chest" instance=ExtResource( 4 )]
+[node name="Jar2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 944, 488 )
+
+[node name="Jar3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 592, 528 )
+
+[node name="Jar4" parent="." instance=ExtResource( 3 )]
+position = Vector2( 528, 528 )
+
+[node name="Jar5" parent="." instance=ExtResource( 3 )]
+position = Vector2( 560, 528 )
+
+[node name="Chest2" parent="." instance=ExtResource( 4 )]
 position = Vector2( 80, 112 )
 
-[node name="Chest2" parent="Chest" instance=ExtResource( 4 )]
+[node name="Chest3" parent="." instance=ExtResource( 4 )]
 position = Vector2( 944, 80 )
+
+[node name="Coin" parent="." instance=ExtResource( 6 )]
+position = Vector2( 224, 280 )

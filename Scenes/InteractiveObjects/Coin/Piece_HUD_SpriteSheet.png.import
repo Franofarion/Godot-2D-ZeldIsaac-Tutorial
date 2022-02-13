@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Piece_HUD_SpriteSheet.png-69e24aff57e6d704913e5a8aec10566c.stex"
+path="res://.import/Piece_HUD_SpriteSheet.png-190677840a4fa59a758b6d1bbabcb1c8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Piece_HUD_SpriteSheet.png"
-dest_files=[ "res://.import/Piece_HUD_SpriteSheet.png-69e24aff57e6d704913e5a8aec10566c.stex" ]
+source_file="res://Scenes/InteractiveObjects/Coin/Piece_HUD_SpriteSheet.png"
+dest_files=[ "res://.import/Piece_HUD_SpriteSheet.png-190677840a4fa59a758b6d1bbabcb1c8.stex" ]
 
 [params]
 
