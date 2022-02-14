@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/HUD_Mask.png-5c980b24d062342f857d8971aa343f5d.stex"
+path="res://.import/HUD.png-02e929b9ceefd5f0c3d9fe0bbcfd7f47.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/HUD_Mask.png"
-dest_files=[ "res://.import/HUD_Mask.png-5c980b24d062342f857d8971aa343f5d.stex" ]
+source_file="res://Scenes/UI/HUD/HUD.png"
+dest_files=[ "res://.import/HUD.png-02e929b9ceefd5f0c3d9fe0bbcfd7f47.stex" ]
 
 [params]
 

@@ -17,6 +17,8 @@ var speed : float = 400.0
 var state : int = STATE.IDLE
 var target : Node2D = null
 
+#### BUILT-IN ####
+
 func _ready():
 	animation_player.play("Wave")
 
@@ -31,6 +33,8 @@ func _physics_process(delta: float) -> void:
 		else:
 			position = position.move_toward(target_pos, spd)
 
+#### LOGIC ####
+
 func collect() -> void:
 	state = STATE.COLLECT
 	coin_sprite.set_visible(false)
@@ -38,8 +42,12 @@ func collect() -> void:
 	particule.set_emitting(true)
 	audio_stream.play()
 	
+	EVENTS.emit_signal("coin_collected")
+	
 	yield(audio_stream, "finished")
 	queue_free()
+
+#### SIGNAL RESPONSES ####
 
 func _on_Area2D_body_entered(body: Node):
 	if state == STATE.IDLE:

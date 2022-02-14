@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=50 format=2]
 
 [ext_resource path="res://Scenes/Character/Character.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Levels/Tilesets/Tileset.png" type="Texture" id=2]
@@ -6,6 +6,11 @@
 [ext_resource path="res://Scenes/InteractiveObjects/Chest/Chest.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/Levels/Level.gd" type="Script" id=5]
 [ext_resource path="res://Scenes/InteractiveObjects/Coin/Coin.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/UI/HUD/HUD_Mask.png" type="Texture" id=7]
+[ext_resource path="res://Scenes/UI/HUD/Portrait.png" type="Texture" id=8]
+[ext_resource path="res://Scenes/UI/HUD/HUD.png" type="Texture" id=9]
+[ext_resource path="res://Scenes/UI/Font/BabaMediumPixels.ttf" type="DynamicFontData" id=10]
+[ext_resource path="res://Scenes/UI/HUD/HUD.gd" type="Script" id=11]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
@@ -436,6 +441,11 @@ points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
 5/shapes = [  ]
 5/z_index = 0
 
+[sub_resource type="DynamicFont" id=38]
+outline_size = 1
+outline_color = Color( 0.321569, 0, 0.176471, 1 )
+font_data = ExtResource( 10 )
+
 [node name="Level" type="YSort"]
 script = ExtResource( 5 )
 __meta__ = {
@@ -480,3 +490,55 @@ position = Vector2( 944, 80 )
 
 [node name="Coin" parent="." instance=ExtResource( 6 )]
 position = Vector2( 224, 280 )
+
+[node name="UI_Container" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="UI_Container"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="HUD" type="TextureRect" parent="UI_Container/UI"]
+light_mask = 0
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 9 )
+script = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Portrait" type="TextureRect" parent="UI_Container/UI/HUD"]
+margin_left = 5.0
+margin_top = 6.0
+margin_right = 53.0
+margin_bottom = 54.0
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Light2D" type="Light2D" parent="UI_Container/UI/HUD"]
+position = Vector2( 75.5, 32.5 )
+texture = ExtResource( 7 )
+mode = 3
+range_layer_min = 1
+range_layer_max = 1
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CoinCounter" type="Label" parent="UI_Container/UI/HUD"]
+light_mask = 0
+margin_left = 73.0
+margin_top = 33.0
+margin_right = 113.0
+margin_bottom = 49.0
+custom_fonts/font = SubResource( 38 )
+text = "0"
+__meta__ = {
+"_edit_use_anchors_": false
+}

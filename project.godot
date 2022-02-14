@@ -13,6 +13,11 @@ config_version=4
 config/name="Godot- 2d- Zeld Isaac- Tutorial"
 run/main_scene="res://Scenes/Levels/Level.tscn"
 
+[autoload]
+
+GAME="*res://Autoload/Game.gd"
+EVENTS="*res://Autoload/Events.gd"
+
 [display]
 
 window/size/width=640
