@@ -143,6 +143,9 @@ func _on_state_changed():
 
 
 func _on_facing_direction_changed():
+	# provide mutiple attacks while spamming direction during attack animation
+	if state == STATE.ATTACK: 
+		return
 	_update_animation()
 	_update_attack_hitbox_direction()
 
