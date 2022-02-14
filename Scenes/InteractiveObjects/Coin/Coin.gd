@@ -23,7 +23,7 @@ func _ready():
 	animation_player.play("Wave")
 
 func _physics_process(delta: float) -> void:
-	if state == STATE.FOLLOW:
+	if state != STATE.IDLE:
 		var target_pos = target.get_position()
 		var spd = speed * delta
 		
@@ -36,16 +36,17 @@ func _physics_process(delta: float) -> void:
 #### LOGIC ####
 
 func collect() -> void:
-	state = STATE.COLLECT
-	coin_sprite.set_visible(false)
-	shadow_sprite.set_visible(false)
-	particule.set_emitting(true)
-	audio_stream.play()
-	
-	EVENTS.emit_signal("coin_collected")
-	
-	yield(audio_stream, "finished")
-	queue_free()
+	if state != STATE.COLLECT:
+		state = STATE.COLLECT
+		coin_sprite.set_visible(false)
+		shadow_sprite.set_visible(false)
+		particule.set_emitting(true)
+		audio_stream.play()
+		
+		EVENTS.emit_signal("coin_collected")
+		
+		yield(audio_stream, "finished")
+		queue_free()
 
 #### SIGNAL RESPONSES ####
 

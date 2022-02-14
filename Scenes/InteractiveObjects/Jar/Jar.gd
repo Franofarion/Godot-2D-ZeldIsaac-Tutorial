@@ -16,9 +16,9 @@ func destroy() -> void:
 		return
 	state = STATE.BREAKING
 	animated_sprite.play('Break')
+	colision_shape.set_disabled(true)
 
 
 func _on_AnimatedSprite_animation_finished():
 	if animated_sprite.get_animation() == 'Break':
 		state = STATE.BROKEN
-		colision_shape.set_disabled(true)

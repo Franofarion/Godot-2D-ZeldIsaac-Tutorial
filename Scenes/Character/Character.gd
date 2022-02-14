@@ -54,6 +54,8 @@ func get_moving_direction() -> Vector2:
 
 #### BUILT-IN ####
 func _process(_delta: float) -> void:
+	if state == STATE.ATTACK:
+		return
 	var __ = move_and_slide(moving_direction * speed)
 
 func _input(_event: InputEvent) -> void:
@@ -65,14 +67,11 @@ func _input(_event: InputEvent) -> void:
 	# .normalized => slow down diagonal movement
 	set_moving_direction(dir.normalized())
 	
-	if Input.is_action_just_pressed('ui_accept'):
+	if Input.is_action_pressed('ui_accept'):
 		set_state(STATE.ATTACK)
 	
 	if state != STATE.ATTACK:
-		if moving_direction == Vector2.ZERO:
-			set_state(STATE.IDLE)
-		else:
-			set_state(STATE.MOVE)
+		_change_state_from_moving_direction()
 
 #### LOGIC ####
 
@@ -85,6 +84,8 @@ func _update_animation() -> void:
 		STATE.IDLE: state_name = 'Idle'
 		STATE.MOVE: state_name = 'Move'
 		STATE.ATTACK: state_name = 'Attack'
+	
+	print('update animation ' + state_name + dir_name)
 	
 	animated_sprite.play(state_name + dir_name)
 
@@ -123,12 +124,17 @@ func _interaction_attempt() -> bool:
 	
 	return false
 
+func _change_state_from_moving_direction() -> void:
+	if moving_direction == Vector2.ZERO:
+			set_state(STATE.IDLE)
+	else:
+		set_state(STATE.MOVE)
+
 #### SIGNAL RESPONSES ####
 
 func _on_AnimatedSprite_animation_finished():
 	if 'Attack'.is_subsequence_of(animated_sprite.get_animation()):
-		set_state(STATE.IDLE)
-		
+		_change_state_from_moving_direction()
 
 func _on_state_changed():
 	if state == STATE.ATTACK:
