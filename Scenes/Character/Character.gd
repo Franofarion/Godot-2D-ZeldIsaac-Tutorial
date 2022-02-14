@@ -1,4 +1,5 @@
 extends KinematicBody2D
+class_name Character
 
 onready var animated_sprite = get_node("AnimatedSprite")
 onready var attack_hitbox = get_node("AttackHitbox")
@@ -84,8 +85,6 @@ func _update_animation() -> void:
 		STATE.IDLE: state_name = 'Idle'
 		STATE.MOVE: state_name = 'Move'
 		STATE.ATTACK: state_name = 'Attack'
-	
-	print('update animation ' + state_name + dir_name)
 	
 	animated_sprite.play(state_name + dir_name)
 
