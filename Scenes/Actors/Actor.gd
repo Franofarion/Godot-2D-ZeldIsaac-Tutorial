@@ -1,14 +1,10 @@
 extends KinematicBody2D
 class_name Actor
 
-onready var animated_sprite = get_node("AnimatedSprite")
-onready var attack_hitbox = get_node("AttackHitbox")
+onready var state_machine = $StateMachine
+onready var animated_sprite = $AnimatedSprite
+onready var attack_hitbox = $AttackHitbox
 
-enum STATE {
-	IDLE,
-	MOVE,
-	ATTACK 
-}
 
 var dir_dict: Dictionary = {
 	"Left": Vector2.LEFT,
@@ -17,25 +13,16 @@ var dir_dict: Dictionary = {
 	"Up": Vector2.UP,
 }
 
-var state : int = STATE.IDLE setget set_state, get_state
 
 var speed := 300.0
 var moving_direction := Vector2.ZERO setget set_moving_direction, get_moving_direction
 var facing_direction := Vector2.DOWN setget set_facing_direction, get_facing_direction
 
-signal state_changed
 signal facing_direction_changed
 signal moving_direction_changed
 
 #### ACCESSORS ####
-
-func set_state(value: int) -> void:
-	if state != value:
-		state = value
-		emit_signal('state_changed')
-func get_state() -> int:
-	return state
-
+ 
 func set_facing_direction(value: Vector2) -> void:
 	if facing_direction != value:
 		facing_direction =  value
@@ -52,29 +39,19 @@ func get_moving_direction() -> Vector2:
 
 #### BUILT-IN ####
 func _ready():
-	var __ = connect("state_changed", self, "_on_state_changed")
+	var __ = state_machine.connect("state_changed", self, "_on_state_changed")
 	__ = connect("facing_direction_changed", self, "_on_facing_direction_changed")
 	__ = connect("moving_direction_changed", self, "_on_moving_direction_changed")
 	__ = animated_sprite.connect("animation_finished", self, "_on_AnimatedSprite_animation_finished")
 	__ = animated_sprite.connect("frame_changed", self, "_on_AnimatedSprite_frame_changed")
 	
-	
-func _physics_process(_delta: float) -> void:
-	if state == STATE.ATTACK:
-		return
-	var __ = move_and_slide(moving_direction * speed)
 
 #### LOGIC ####
 
 # Update the animation based on the current state and the facing direction
 func _update_animation() -> void:
 	var dir_name = _find_dir_name(facing_direction)
-	var state_name = ''
-	
-	match(state):
-		STATE.IDLE: state_name = 'Idle'
-		STATE.MOVE: state_name = 'Move'
-		STATE.ATTACK: state_name = 'Attack'
+	var state_name = state_machine.get_state_name()
 	
 	animated_sprite.play(state_name + dir_name)
 
@@ -106,12 +83,12 @@ func _update_attack_hitbox_direction() -> void:
 
 func _change_state_from_moving_direction() -> void:
 	if moving_direction == Vector2.ZERO:
-			set_state(STATE.IDLE)
+		state_machine.set_state('Idle')
 	else:
-		set_state(STATE.MOVE)
+		state_machine.set_state('Move')
 
 #### SIGNAL RESPONSES ####
-func _on_state_changed():
+func _on_state_changed(new_state: Object):
 	_update_animation()
 
 func _on_AnimatedSprite_animation_finished():
@@ -120,7 +97,7 @@ func _on_AnimatedSprite_animation_finished():
 
 func _on_facing_direction_changed():
 	# prevent mutiple attacks while spamming direction during attack animation
-	if state == STATE.ATTACK: 
+	if state_machine.get_state_name() == 'Attack': 
 		return
 	_update_animation()
 	_update_attack_hitbox_direction()

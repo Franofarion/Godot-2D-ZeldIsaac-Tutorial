@@ -16,9 +16,9 @@ func _input(_event: InputEvent) -> void:
 	set_moving_direction(dir.normalized())
 	
 	if Input.is_action_pressed('ui_accept'):
-		set_state(STATE.ATTACK)
+		state_machine.set_state('Attack')
 	
-	if state != STATE.ATTACK:
+	if state_machine.get_state_name() != 'Attack':
 		_change_state_from_moving_direction()
 
 #### LOGIC ####
@@ -35,8 +35,8 @@ func _interaction_attempt() -> bool:
 
 #### SIGNAL RESPONSES ####
 
-func _on_state_changed():
-	if state == STATE.ATTACK:
+func _on_state_changed(new_state: Object):
+	if new_state.name == 'Attack':
 		if _interaction_attempt():
-			set_state(STATE.IDLE)
-	._on_state_changed()
+			state_machine.set_state('Idle')
+	._on_state_changed(new_state)
