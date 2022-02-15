@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Character_SpriteSheet_Block_hurt.png-a780a7cb7f0f6da17040755a977e4479.stex"
+path="res://.import/Squelette_SpriteSheet.png-3bcddd7692c7bf3deb6b4b681277fa35.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Character/Sprites/Character_SpriteSheet_Block_hurt.png"
-dest_files=[ "res://.import/Character_SpriteSheet_Block_hurt.png-a780a7cb7f0f6da17040755a977e4479.stex" ]
+source_file="res://Scenes/Actors/Enemy/Skeleton/Squelette_SpriteSheet.png"
+dest_files=[ "res://.import/Squelette_SpriteSheet.png-3bcddd7692c7bf3deb6b4b681277fa35.stex" ]
 
 [params]
 
