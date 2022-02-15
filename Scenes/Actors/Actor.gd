@@ -14,7 +14,7 @@ var dir_dict: Dictionary = {
 }
 
 
-var speed := 300.0
+export var speed := 300.0
 var moving_direction := Vector2.ZERO setget set_moving_direction, get_moving_direction
 var facing_direction := Vector2.DOWN setget set_facing_direction, get_facing_direction
 
@@ -88,7 +88,7 @@ func _change_state_from_moving_direction() -> void:
 		state_machine.set_state('Move')
 
 #### SIGNAL RESPONSES ####
-func _on_state_changed(new_state: Object):
+func _on_state_changed(_new_state: Object):
 	_update_animation()
 
 func _on_AnimatedSprite_animation_finished():
