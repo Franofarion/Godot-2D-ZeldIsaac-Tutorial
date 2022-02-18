@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scenes/Actors/Enemy/Enemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Actors/Enemy/SkeletonSpriteFrame.tres" type="SpriteFrames" id=2]
@@ -9,6 +9,8 @@
 [ext_resource path="res://Scenes/Actors/Enemy/Skeleton/EnemyMoveState.gd" type="Script" id=7]
 [ext_resource path="res://Scenes/Actors/Enemy/BehaviourState/ChaseState.gd" type="Script" id=8]
 [ext_resource path="res://Scenes/Actors/Enemy/BehaviourState/WanderState.gd" type="Script" id=9]
+[ext_resource path="res://Scenes/Actors/Enemy/BehaviourState/WaitState.gd" type="Script" id=10]
+[ext_resource path="res://Scenes/Actors/Enemy/BehaviourState/GoToState.gd" type="Script" id=11]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -54,6 +56,15 @@ script = ExtResource( 5 )
 
 [node name="Wander" type="Node" parent="BehaviourTree" index="0"]
 script = ExtResource( 9 )
+
+[node name="Wait" type="Node" parent="BehaviourTree/Wander" index="0"]
+script = ExtResource( 10 )
+
+[node name="Timer" type="Timer" parent="BehaviourTree/Wander/Wait" index="0"]
+one_shot = true
+
+[node name="GoTo" type="Node" parent="BehaviourTree/Wander" index="1"]
+script = ExtResource( 11 )
 
 [node name="Chase" type="Node" parent="BehaviourTree" index="1"]
 script = ExtResource( 8 )

@@ -59,6 +59,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Actors/Enemy/Skeleton/EnemyMoveState.gd"
 }, {
+"base": "State",
+"class": "GoToState",
+"language": "GDScript",
+"path": "res://Scenes/Actors/Enemy/BehaviourState/GoToState.gd"
+}, {
 "base": "Node",
 "class": "State",
 "language": "GDScript",
@@ -69,12 +74,17 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://StateMachine/StateLabel.gd"
 }, {
-"base": "Node2D",
+"base": "State",
 "class": "StateMachine",
 "language": "GDScript",
 "path": "res://StateMachine/StateMachine.gd"
 }, {
 "base": "State",
+"class": "WaitState",
+"language": "GDScript",
+"path": "res://Scenes/Actors/Enemy/BehaviourState/WaitState.gd"
+}, {
+"base": "StateMachine",
 "class": "WanderState",
 "language": "GDScript",
 "path": "res://Scenes/Actors/Enemy/BehaviourState/WanderState.gd"
@@ -90,9 +100,11 @@ _global_script_class_icons={
 "CollectableSpawnState": "",
 "Enemy": "",
 "EnemyMoveState": "",
+"GoToState": "",
 "State": "",
 "StateLabel": "",
 "StateMachine": "",
+"WaitState": "",
 "WanderState": ""
 }
 
