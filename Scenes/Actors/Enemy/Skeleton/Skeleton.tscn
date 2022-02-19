@@ -41,7 +41,6 @@ shape = SubResource( 2 )
 script = ExtResource( 7 )
 
 [node name="StateLabel" type="Label" parent="StateMachine" index="3"]
-visible = false
 margin_left = -20.0
 margin_top = -53.0
 margin_right = 20.0
@@ -76,7 +75,6 @@ script = ExtResource( 4 )
 one_shot = true
 
 [node name="StateLabel" type="Label" parent="BehaviourTree" index="3"]
-visible = false
 margin_left = -20.0
 margin_top = -40.0
 margin_right = 20.0

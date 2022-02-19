@@ -100,7 +100,7 @@ animations = [ {
 } ]
 
 [sub_resource type="CircleShape2D" id=19]
-radius = 51.031
+radius = 104.307
 
 [sub_resource type="Gradient" id=20]
 offsets = PoolRealArray( 0.248756, 0.781095, 1 )
