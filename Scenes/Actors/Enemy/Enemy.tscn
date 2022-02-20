@@ -5,9 +5,26 @@
 [node name="Enemy" groups=["Enemy"] instance=ExtResource( 1 )]
 
 [node name="ChaseArea" type="Area2D" parent="." index="4"]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ChaseArea" index="0"]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="AttackArea" type="Area2D" parent="." index="5"]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" index="0"]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="PathLine" type="Line2D" parent="." index="6"]
+visible = false
+width = 3.0
+default_color = Color( 1, 0, 0, 1 )

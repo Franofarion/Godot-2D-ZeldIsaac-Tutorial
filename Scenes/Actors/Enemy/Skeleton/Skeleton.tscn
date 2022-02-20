@@ -90,3 +90,6 @@ shape = SubResource( 3 )
 
 [node name="CollisionShape2D" parent="AttackArea" index="0"]
 shape = SubResource( 4 )
+
+[node name="PathLine" parent="." index="7"]
+visible = true

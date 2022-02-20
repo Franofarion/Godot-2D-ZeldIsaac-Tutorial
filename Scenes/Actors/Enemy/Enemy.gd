@@ -4,6 +4,7 @@ class_name Enemy
 onready var behaviour_tree = $BehaviourTree
 onready var chase_area = $ChaseArea
 onready var attack_area = $AttackArea
+onready var path_line = $PathLine
 
 var target : Node2D = null
 var path : Array = []
@@ -40,6 +41,8 @@ func _ready():
 	__ = connect("target_in_chase_area_changed", self, "_on_target_in_chase_area_changed")
 	__ = connect("target_in_attack_area_changed", self, "_on_target_in_attack_area_changed")
 	__ = state_machine.connect("state_changed", self, "_on_StateMachine_state_changed")
+	
+	path_line.set_as_toplevel(true)
 
 #### LOGIC ####
 
@@ -63,6 +66,9 @@ func update_move_path(dest: Vector2) -> void:
 		path = [dest]
 	else:
 		path = pathfinder.find_path(global_position, dest)
+	
+	if path_line.is_visible():
+		path_line.set_points(path)
 
 func move_along_path(delta: float) -> void:
 	if path.empty():
