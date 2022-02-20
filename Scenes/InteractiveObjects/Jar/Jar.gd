@@ -14,9 +14,12 @@ var state : int = STATE.IDLE
 func destroy() -> void:
 	if state != STATE.IDLE:
 		return
+	
+	EVENTS.emit_signal("obstacle_destroyed", self)
 	state = STATE.BREAKING
 	animated_sprite.play('Break')
 	colision_shape.set_disabled(true)
+	
 
 
 func _on_AnimatedSprite_animation_finished():
