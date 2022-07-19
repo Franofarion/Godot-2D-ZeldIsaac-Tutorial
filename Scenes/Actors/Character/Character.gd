@@ -25,9 +25,10 @@ func _input(_event: InputEvent) -> void:
 
 func _interaction_attempt() -> bool:
 	var bodies_array = attack_hitbox.get_overlapping_bodies()
-	
+
 	for body in bodies_array:
 		if body.has_method('interact'):
+			print('interaction with : ', body)
 			body.interact()
 			return true
 	

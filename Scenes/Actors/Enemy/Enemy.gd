@@ -122,10 +122,7 @@ func _on_target_in_attack_area_changed(_value: bool):
 
 # Overided method
 func _on_moving_direction_changed():
-	if  abs(moving_direction.x) > abs(moving_direction.y):
-		set_facing_direction(Vector2(sign(moving_direction.x), 0))
-	else:
-		set_facing_direction(Vector2(0, sign(moving_direction.y)))
+	face_direction(moving_direction)
 
 func _on_StateMachine_state_changed(state) -> void:
 	if state_machine == null:

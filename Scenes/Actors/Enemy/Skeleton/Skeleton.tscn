@@ -33,7 +33,11 @@ frames = ExtResource( 2 )
 animation = "IdleDown"
 
 [node name="CollisionShape2D" parent="." index="1"]
+visible = false
 shape = SubResource( 1 )
+
+[node name="AttackHitbox" parent="." index="2"]
+visible = false
 
 [node name="CollisionShape2D" parent="AttackHitbox" index="0"]
 shape = SubResource( 2 )
@@ -85,8 +89,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ChaseArea" parent="." index="5"]
+visible = false
+
 [node name="CollisionShape2D" parent="ChaseArea" index="0"]
 shape = SubResource( 3 )
+
+[node name="AttackArea" parent="." index="6"]
+visible = false
 
 [node name="CollisionShape2D" parent="AttackArea" index="0"]
 shape = SubResource( 4 )

@@ -4,6 +4,7 @@ class_name Actor
 onready var state_machine = $StateMachine
 onready var animated_sprite = $AnimatedSprite
 onready var attack_hitbox = $AttackHitbox
+onready var tween = $Tween
 
 
 var dir_dict: Dictionary = {
@@ -52,7 +53,6 @@ func _ready():
 func _update_animation() -> void:
 	var dir_name = _find_dir_name(facing_direction)
 	var state_name = state_machine.get_state_name()
-	
 	animated_sprite.play(state_name + dir_name)
 
 # Find the name of the given direction and returns it as a string
@@ -72,7 +72,14 @@ func attack_effect() -> void:
 	var bodies_array = attack_hitbox.get_overlapping_bodies()
 	
 	for body in bodies_array:
-		if body.has_method('destroy'):
+		if body == self:
+			continue
+		
+		if body.has_method('hurt'):
+			body.face_position(global_position)
+			body.hurt()
+
+		elif body.has_method('destroy'):
 			body.destroy()
 
 # Update the rotation of the attack hitbox based on the facing direction
@@ -80,7 +87,29 @@ func _update_attack_hitbox_direction() -> void:
 	var angle = facing_direction.angle()
 	attack_hitbox.set_rotation_degrees(rad2deg(angle) - 90)
 
+func hurt() -> void:
+	state_machine.set_state("Hurt")
+	_hurt_feedback()
 
+func _hurt_feedback() -> void:
+	tween.interpolate_property(animated_sprite.material, "shader_param/opacity", 0.0, 1.0, 0.1)
+	tween.start()
+	
+	yield(tween, "tween_all_completed")
+	
+	tween.interpolate_property(animated_sprite.material, "shader_param/opacity", 1.0, 0.0, 0.1)
+	tween.start()
+
+func face_position(pos: Vector2) -> void:
+	var dir = global_position.direction_to(pos)
+	face_direction(dir)
+
+func face_direction(dir: Vector2) -> void: 
+	if  abs(dir.x) > abs(dir.y):
+		set_facing_direction(Vector2(sign(dir.x), 0))
+	else:
+		set_facing_direction(Vector2(0, sign(dir.y)))
+	
 func _change_state_from_moving_direction() -> void:
 	if moving_direction == Vector2.ZERO:
 		state_machine.set_state('Idle')
@@ -93,6 +122,8 @@ func _on_state_changed(_new_state: Object):
 
 func _on_AnimatedSprite_animation_finished():
 	if 'Attack'.is_subsequence_of(animated_sprite.get_animation()):
+		_change_state_from_moving_direction()
+	elif 'Hurt'.is_subsequence_of(animated_sprite.get_animation()):
 		_change_state_from_moving_direction()
 
 func _on_facing_direction_changed():
