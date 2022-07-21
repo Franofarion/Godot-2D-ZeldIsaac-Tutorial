@@ -28,7 +28,6 @@ func _interaction_attempt() -> bool:
 
 	for body in bodies_array:
 		if body.has_method('interact'):
-			print('interaction with : ', body)
 			body.interact()
 			return true
 	
@@ -41,3 +40,9 @@ func _on_state_changed(new_state: Object):
 		if _interaction_attempt():
 			state_machine.set_state('Idle')
 	._on_state_changed(new_state)
+
+
+func _on_hp_changed(new_hp: int) -> void:
+	._on_hp_changed(new_hp)
+	
+	EVENTS.emit_signal("character_hp_changed", hp)
