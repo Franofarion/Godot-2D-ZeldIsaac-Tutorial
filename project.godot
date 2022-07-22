@@ -24,6 +24,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Actors/Enemy/BehaviourState/AttackState.gd"
 }, {
+"base": "Node",
+"class": "Behavior",
+"language": "GDScript",
+"path": "res://Scenes/Behavior/Behavior.gd"
+}, {
 "base": "Actor",
 "class": "Character",
 "language": "GDScript",
@@ -38,6 +43,11 @@ _global_script_classes=[ {
 "class": "Coin",
 "language": "GDScript",
 "path": "res://Scenes/InteractiveObjects/Coin/Coin.gd"
+}, {
+"base": "Behavior",
+"class": "CollectableBehavior",
+"language": "GDScript",
+"path": "res://Scenes/Behavior/CollectableBehavior.gd"
 }, {
 "base": "State",
 "class": "CollectableFollowState",
@@ -108,9 +118,11 @@ _global_script_class_icons={
 "Actor": "",
 "ActorMoveState": "",
 "AttackState": "",
+"Behavior": "",
 "Character": "",
 "ChaseState": "",
 "Coin": "",
+"CollectableBehavior": "",
 "CollectableFollowState": "",
 "CollectableSpawnState": "",
 "Door": "",
@@ -171,6 +183,14 @@ texture={
 "size_limit": 0,
 "stream": false,
 "svg/scale": 1.0
+}
+
+[input]
+
+block={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777238,"unicode":0,"echo":false,"script":null)
+ ]
 }
 
 [physics]

@@ -14,12 +14,20 @@ func _input(_event: InputEvent) -> void:
 	)
 	# .normalized => slow down diagonal movement
 	set_moving_direction(dir.normalized())
-	
+
 	if Input.is_action_pressed('ui_accept'):
 		state_machine.set_state('Attack')
-	
-	if state_machine.get_state_name() != 'Attack':
-		_change_state_from_moving_direction()
+
+	_update_state()
+
+func _update_state() -> void:
+	if not state_machine.get_state_name() in ["Attack", "Parry"]:
+		if Input.is_action_pressed("block"):
+			state_machine.set_state("Block")
+		elif moving_direction == Vector2.ZERO:
+				state_machine.set_state('Idle')
+		else:
+				state_machine.set_state('Move')
 
 #### LOGIC ####
 
@@ -30,7 +38,7 @@ func _interaction_attempt() -> bool:
 		if body.has_method('interact'):
 			body.interact()
 			return true
-	
+
 	return false
 
 #### SIGNAL RESPONSES ####
@@ -39,10 +47,12 @@ func _on_state_changed(new_state: Object):
 	if new_state.name == 'Attack':
 		if _interaction_attempt():
 			state_machine.set_state('Idle')
+		elif state_machine.previous_state == $StateMachine/Attack:
+			_update_state()
 	._on_state_changed(new_state)
 
 
 func _on_hp_changed(new_hp: int) -> void:
 	._on_hp_changed(new_hp)
-	
+
 	EVENTS.emit_signal("character_hp_changed", hp)

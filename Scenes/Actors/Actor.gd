@@ -25,9 +25,10 @@ onready var hp : int = max_hp setget set_hp, get_hp
 signal facing_direction_changed
 signal moving_direction_changed
 signal hp_changed(hp)
+signal death_feedback_finished
 
 #### ACCESSORS ####
- 
+
 func set_facing_direction(value: Vector2) -> void:
 	if facing_direction != value:
 		facing_direction =  value
@@ -41,7 +42,7 @@ func set_moving_direction(value: Vector2) -> void:
 		emit_signal('moving_direction_changed')
 func get_moving_direction() -> Vector2:
 	return moving_direction
-	
+
 func set_hp(value: int) -> void:
 	value = Maths.clampi(value, 0, max_hp)
 	if hp != value:
@@ -58,6 +59,7 @@ func _ready():
 	__ = animated_sprite.connect("animation_finished", self, "_on_AnimatedSprite_animation_finished")
 	__ = animated_sprite.connect("frame_changed", self, "_on_AnimatedSprite_frame_changed")
 	__ = connect("hp_changed", self, "_on_hp_changed")
+	__ = connect("death_feedback_finished", self, "_on_death_feedback_finished")
 
 
 #### LOGIC ####
@@ -72,22 +74,22 @@ func _update_animation() -> void:
 func _find_dir_name(dir: Vector2) -> String:
 	var dir_value_array = dir_dict.values()
 	var dir_index = dir_value_array.find(dir)
-	
-	
+
+
 	if dir_index == -1:
 		return ""
 	var dir_keys_array = dir_dict.keys()
 	var dir_key = dir_keys_array[dir_index]
-	
+
 	return dir_key
 
 func attack_effect() -> void:
 	var bodies_array = attack_hitbox.get_overlapping_bodies()
-	
+
 	for body in bodies_array:
 		if body == self:
 			continue
-		
+
 		if body.has_method('hurt'):
 			body.face_position(global_position)
 			var damage = _compute_damage(body)
@@ -102,22 +104,37 @@ func _update_attack_hitbox_direction() -> void:
 	attack_hitbox.set_rotation_degrees(rad2deg(angle) - 90)
 
 func hurt(damage: int) -> void:
+	if state_machine.get_state_name() == "Block":
+		parry()
+		return
 	set_hp(hp - damage)
 	state_machine.set_state("Hurt")
 	_hurt_feedback()
 
+func parry() -> void:
+	state_machine.set_state("Parry")
+
 func die() -> void:
 	EVENTS.emit_signal("actor_died", self)
-	queue_free()
+	state_machine.set_state("Dead")
+	_death_feedback()
+	$CollisionShape2D.set_disabled(true)
 
 func _hurt_feedback() -> void:
 	tween.interpolate_property(animated_sprite.material, "shader_param/opacity", 0.0, 1.0, 0.1)
 	tween.start()
-	
+
 	yield(tween, "tween_all_completed")
-	
+
 	tween.interpolate_property(animated_sprite.material, "shader_param/opacity", 1.0, 0.0, 0.1)
 	tween.start()
+
+func _death_feedback() -> void:
+	tween.interpolate_property(self, "modulate:a", 1.0, 0.0, 0.8)
+	tween.start()
+
+	yield(tween, "tween_all_completed")
+	emit_signal("death_feedback_finished")
 
 func _compute_damage(_target: Actor) -> int:
 	return 1
@@ -126,37 +143,37 @@ func face_position(pos: Vector2) -> void:
 	var dir = global_position.direction_to(pos)
 	face_direction(dir)
 
-func face_direction(dir: Vector2) -> void: 
+func face_direction(dir: Vector2) -> void:
 	if  abs(dir.x) > abs(dir.y):
 		set_facing_direction(Vector2(sign(dir.x), 0))
 	else:
 		set_facing_direction(Vector2(0, sign(dir.y)))
-	
-func _change_state_from_moving_direction() -> void:
-	if moving_direction == Vector2.ZERO:
-		state_machine.set_state('Idle')
-	else:
-		state_machine.set_state('Move')
+
 
 #### SIGNAL RESPONSES ####
-
-func _on_hp_changed(new_hp: int) -> void:
-	print(name + " - HP: " + String(new_hp))
-	if (new_hp == 0):
-		die()
+func _on_hp_changed(_new_hp: int) -> void:
+	pass
 
 func _on_state_changed(_new_state: Object):
 	_update_animation()
 
 func _on_AnimatedSprite_animation_finished():
 	if 'Attack'.is_subsequence_of(animated_sprite.get_animation()):
-		_change_state_from_moving_direction()
+		state_machine.set_state('Idle')
+	elif "Parry".is_subsequence_of(animated_sprite.get_animation()):
+		state_machine.set_state("Block")
 	elif 'Hurt'.is_subsequence_of(animated_sprite.get_animation()):
-		_change_state_from_moving_direction()
+		if (hp == 0):
+			die()
+		else:
+			if moving_direction == Vector2.ZERO:
+				state_machine.set_state('Idle')
+			else:
+				state_machine.set_state('Move')
 
 func _on_facing_direction_changed():
 	# prevent mutiple attacks while spamming direction during attack animation
-	if state_machine.get_state_name() == 'Attack': 
+	if state_machine.get_state_name() == 'Attack':
 		return
 	_update_animation()
 	_update_attack_hitbox_direction()
@@ -165,9 +182,9 @@ func _on_facing_direction_changed():
 func _on_moving_direction_changed():
 	if moving_direction == Vector2.ZERO or moving_direction == facing_direction:
 		return
-	
+
 	var sign_dir = Vector2(sign(moving_direction.x), sign(moving_direction.y))
-	
+
 	# if the movement is not diagonal
 	if sign_dir == moving_direction:
 		set_facing_direction(moving_direction)
@@ -178,8 +195,10 @@ func _on_moving_direction_changed():
 		else:
 			set_facing_direction(Vector2(sign_dir.x, 0))
 
-
 func _on_AnimatedSprite_frame_changed():
 	if 'Attack'.is_subsequence_of(animated_sprite.get_animation()):
 		if animated_sprite.get_frame() == 1:
 			attack_effect()
+
+func _on_death_feedback_finished() -> void:
+	queue_free()

@@ -42,7 +42,7 @@ func _ready():
 	__ = connect("target_in_attack_area_changed", self, "_on_target_in_attack_area_changed")
 	__ = state_machine.connect("state_changed", self, "_on_StateMachine_state_changed")
 	__ = $BehaviourTree/Attack/Cooldown.connect("timeout", self, "_on_attack_cooldown_finished")
-	
+
 	path_line.set_as_toplevel(true)
 
 #### LOGIC ####
@@ -52,17 +52,20 @@ func _update_target() -> void:
 		target = null
 
 func _update_behaviour_state() -> void:
+	if state_machine.get_state_name() == "Dead":
+		return
+
 	if target_in_attack_area:
 		if $BehaviourTree/Attack.is_cooldown_running():
 			behaviour_tree.set_state("Inactive")
 			path = []
 		else:
 			behaviour_tree.set_state("Attack")
-	
+
 	elif target_in_chase_area:
 		behaviour_tree.set_state("Chase")
-	
-	else: 
+
+	else:
 		behaviour_tree.set_state("Wander")
 
 func update_move_path(dest: Vector2) -> void:
@@ -70,23 +73,23 @@ func update_move_path(dest: Vector2) -> void:
 		path = [dest]
 	else:
 		path = pathfinder.find_path(global_position, dest)
-	
+
 	if path_line.is_visible():
 		path_line.set_points(path)
 
 func move_along_path(delta: float) -> void:
 	if path.empty():
 		return
-	
+
 	var dir = global_position.direction_to(path[0])
 	var dist = global_position.distance_to(path[0])
-	
+
 	set_moving_direction(dir)
-	
+
 	if dist <= speed * delta:
 		var __ = move_and_collide(dir * dist)
 		path.remove(0)
-		
+
 		if path.empty():
 			emit_signal("move_path_finished")
 	else:
@@ -95,7 +98,11 @@ func move_along_path(delta: float) -> void:
 func can_attack() -> bool:
 	return !$BehaviourTree/Attack.is_cooldown_running() && target_in_attack_area
 
-#### SIGNAL RESPONSES #### 
+func die() -> void:
+	.die()
+	behaviour_tree.set_state("Inactive")
+
+#### SIGNAL RESPONSES ####
 
 func _on_ChaseArea_body_entered(body: Node2D):
 	if body is Character:
@@ -131,10 +138,10 @@ func _on_moving_direction_changed():
 func _on_StateMachine_state_changed(state: State) -> void:
 	if state_machine == null:
 		return
-	
+
 	if state_machine.previous_state == $StateMachine/Attack or state_machine.previous_state == $StateMachine/Hurt:
 		_update_behaviour_state()
-	
+
 	if state.name == "Attack":
 		face_position(target.global_position)
 
