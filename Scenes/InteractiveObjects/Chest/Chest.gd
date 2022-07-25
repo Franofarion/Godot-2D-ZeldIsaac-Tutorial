@@ -10,10 +10,8 @@ func interact() -> void:
 		state_machine.set_state('Open')
 		animated_sprite.play('Open')
 
-func _spawn_content() -> void:
-	EVENTS.emit_signal("spawn_coin", position)
 
 func _on_AnimatedSprite_animation_finished():
 	if animated_sprite.get_animation() == 'Open':
 		state_machine.set_state('Opened')
-		_spawn_content()
+		$DropperBehavior.drop_item()
