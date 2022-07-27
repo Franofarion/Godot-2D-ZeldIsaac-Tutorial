@@ -9,7 +9,6 @@ func _ready() -> void:
 
 
 func _spawn_item(item_data: ItemData, pos: Vector2) -> void:
-	print('_spawn_item : ' + item_data.item_name)
 	var item = item_scene.instance()
 
 	owner.add_child(item)
