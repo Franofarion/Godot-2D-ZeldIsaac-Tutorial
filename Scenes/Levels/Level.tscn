@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=2]
+[gd_scene load_steps=64 format=2]
 
 [ext_resource path="res://Scenes/Actors/Character/Character.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Levels/Tilesets/Tileset.png" type="Texture" id=2]
@@ -18,7 +18,9 @@
 [ext_resource path="res://Scenes/InteractiveObjects/Door/Door.tscn" type="PackedScene" id=16]
 [ext_resource path="res://Scenes/InteractiveObjects/Item/Item.tscn" type="PackedScene" id=17]
 [ext_resource path="res://Resources/ItemData/HP_Potion.tres" type="Resource" id=18]
-[ext_resource path="res://Scenes/UI/Inventory/Inventory.gd" type="Script" id=19]
+[ext_resource path="res://Scenes/UI/Inventory/InventoryDataManager.gd" type="Script" id=19]
+[ext_resource path="res://Scenes/UI/Inventory/Inventory.gd" type="Script" id=20]
+[ext_resource path="res://Scenes/UI/Inventory/InventoryItemList.gd" type="Script" id=21]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
@@ -482,7 +484,7 @@ tile_data = PoolIntArray( 0, 4, 0, 1, 4, 196612, 2, 4, 196612, 3, 4, 196612, 4, 
 script = ExtResource( 14 )
 
 [node name="Character" parent="." instance=ExtResource( 1 )]
-position = Vector2( 409, 272 )
+position = Vector2( 320, 192 )
 
 [node name="Jar" parent="." instance=ExtResource( 3 )]
 position = Vector2( 688, 368 )
@@ -592,9 +594,56 @@ __meta__ = {
 }
 
 [node name="Inventory" type="Control" parent="UI_Container/UI"]
-margin_right = 40.0
-margin_bottom = 40.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -8.0
+margin_top = -8.0
+margin_right = -8.0
+margin_bottom = -8.0
+script = ExtResource( 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InventoryDataManager" type="Node" parent="UI_Container/UI/Inventory"]
 script = ExtResource( 19 )
+
+[node name="Panel" type="Panel" parent="UI_Container/UI/Inventory"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 176.0
+margin_bottom = 8.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI_Container/UI/Inventory/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="UI_Container/UI/Inventory/Panel/VBoxContainer"]
+margin_right = 168.0
+margin_bottom = 14.0
+text = "Inventory"
+align = 1
+valign = 1
+
+[node name="ItemList" type="ItemList" parent="UI_Container/UI/Inventory/Panel/VBoxContainer"]
+margin_top = 18.0
+margin_right = 168.0
+margin_bottom = 380.0
+size_flags_vertical = 3
+script = ExtResource( 21 )
+
+[node name="Tween" type="Tween" parent="UI_Container/UI/Inventory"]
 
 [node name="ItemFactory" type="Node2D" parent="."]
 script = ExtResource( 12 )
@@ -609,3 +658,6 @@ position = Vector2( 480, 32 )
 [node name="Item" parent="." instance=ExtResource( 17 )]
 position = Vector2( 816, 323 )
 item_data = ExtResource( 18 )
+
+[connection signal="item_added" from="UI_Container/UI/Inventory/InventoryDataManager" to="UI_Container/UI/Inventory/Panel/VBoxContainer/ItemList" method="_on_InventoryDataManager_item_added"]
+[connection signal="item_removed" from="UI_Container/UI/Inventory/InventoryDataManager" to="UI_Container/UI/Inventory/Panel/VBoxContainer/ItemList" method="_on_InventoryDataManager_item_removed"]
