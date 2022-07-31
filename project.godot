@@ -69,6 +69,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Behavior/DropperBehavior.gd"
 }, {
+"base": "Node2D",
+"class": "DungeonGenerator",
+"language": "GDScript",
+"path": "res://Scenes/DungeonGenerator/DungeonGenerator.gd"
+}, {
 "base": "Actor",
 "class": "Enemy",
 "language": "GDScript",
@@ -149,10 +154,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://StateMachine/StateMachine.gd"
 }, {
+"base": "Object",
+"class": "Utils",
+"language": "GDScript",
+"path": "res://Static/Utils.gd"
+}, {
 "base": "State",
 "class": "WaitState",
 "language": "GDScript",
 "path": "res://Scenes/Actors/Enemy/BehaviourState/WaitState.gd"
+}, {
+"base": "Node",
+"class": "Walker",
+"language": "GDScript",
+"path": "res://Scenes/DungeonGenerator/Walker.gd"
 }, {
 "base": "StateMachine",
 "class": "WanderState",
@@ -172,6 +187,7 @@ _global_script_class_icons={
 "CollectableSpawnState": "",
 "Door": "",
 "DropperBehavior": "",
+"DungeonGenerator": "",
 "Enemy": "",
 "EnemyMoveState": "",
 "GoToState": "",
@@ -188,7 +204,9 @@ _global_script_class_icons={
 "State": "",
 "StateLabel": "",
 "StateMachine": "",
+"Utils": "",
 "WaitState": "",
+"Walker": "",
 "WanderState": ""
 }
 
