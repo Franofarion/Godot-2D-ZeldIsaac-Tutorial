@@ -11,7 +11,6 @@ func set_selected_item_id(value: int) -> void:
 		selected_item_id = value
 	else:
 		selected_item_id = wrapi(value, 0, get_item_count())
-
 	emit_signal("selected_item_id_changed", selected_item_id)
 func get_selected_item_id() -> int: return selected_item_id
 
@@ -30,6 +29,13 @@ func navigate_up() -> void:
 func navigate_down() -> void:
 	set_selected_item_id(selected_item_id + 1)
 
+
+func use_item() -> void:
+	var item_amount = get_item_metadata(selected_item_id)
+	EVENTS.emit_signal("item_used", item_amount.item)
+
+	item_amount.amount -= 1
+	_update_item_display(item_amount)
 
 func _update_selected_item() -> void:
 	if selected_item_id == -1:
@@ -63,7 +69,6 @@ func _find_item_in_list(item_amount: ItemAmount) -> int:
 ### SIGNAL RESPONSES ###
 
 func _on_InventoryDataManager_item_added(item_amount: ItemAmount):
-	print('1')
 	_update_item_display(item_amount)
 
 

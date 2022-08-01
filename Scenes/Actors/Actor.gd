@@ -22,9 +22,14 @@ var facing_direction := Vector2.DOWN setget set_facing_direction, get_facing_dir
 export var max_hp : int = 3
 onready var hp : int = max_hp setget set_hp, get_hp
 
+export var max_mp : int = 3
+onready var mp : int = max_mp setget set_mp, get_mp
+
+
 signal facing_direction_changed
 signal moving_direction_changed
 signal hp_changed(hp)
+signal mp_changed(mp)
 signal death_feedback_finished
 
 #### ACCESSORS ####
@@ -51,6 +56,15 @@ func set_hp(value: int) -> void:
 func get_hp() -> int:
 	return hp
 
+func set_mp(value: int) -> void:
+	value = Maths.clampi(value, 0, max_mp)
+	if mp != value:
+		mp = value
+		emit_signal('mp_changed', mp)
+func get_mp() -> int:
+	return mp
+
+
 #### BUILT-IN ####
 func _ready():
 	var __ = state_machine.connect("state_changed", self, "_on_state_changed")
@@ -59,7 +73,9 @@ func _ready():
 	__ = animated_sprite.connect("animation_finished", self, "_on_AnimatedSprite_animation_finished")
 	__ = animated_sprite.connect("frame_changed", self, "_on_AnimatedSprite_frame_changed")
 	__ = connect("hp_changed", self, "_on_hp_changed")
+	__ = connect("mp_changed", self, "_on_mp_changed")
 	__ = connect("death_feedback_finished", self, "_on_death_feedback_finished")
+
 
 
 #### LOGIC ####
@@ -153,6 +169,10 @@ func face_direction(dir: Vector2) -> void:
 #### SIGNAL RESPONSES ####
 func _on_hp_changed(_new_hp: int) -> void:
 	pass
+
+func _on_mp_changed(_new_hp: int) -> void:
+	pass
+
 
 func _on_state_changed(_new_state: Object):
 	_update_animation()

@@ -1,12 +1,7 @@
 extends Resource
 class_name ItemData
 
-enum DAMAGE_TYPE {
-  HP,
-  MP
-}
-
-export(DAMAGE_TYPE) var damage_type : int = DAMAGE_TYPE.HP
+export(Constants.DAMAGE_TYPE) var damage_type : int = Constants.DAMAGE_TYPE.HP
 export var damage : int = 0
 
 export var item_name : String = ""

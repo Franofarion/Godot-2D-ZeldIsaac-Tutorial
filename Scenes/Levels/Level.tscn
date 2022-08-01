@@ -488,6 +488,7 @@ script = ExtResource( 14 )
 
 [node name="Character" parent="." instance=ExtResource( 1 )]
 position = Vector2( 320, 192 )
+max_mp = 10
 
 [node name="Jar" parent="." instance=ExtResource( 3 )]
 position = Vector2( 688, 368 )
