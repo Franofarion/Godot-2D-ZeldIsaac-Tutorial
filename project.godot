@@ -59,6 +59,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/InteractiveObjects/Collectables/States/CollectableSpawnState.gd"
 }, {
+"base": "Object",
+"class": "Constants",
+"language": "GDScript",
+"path": "res://Static/Constants.gd"
+}, {
 "base": "StaticBody2D",
 "class": "Door",
 "language": "GDScript",
@@ -185,6 +190,7 @@ _global_script_class_icons={
 "CollectableBehavior": "",
 "CollectableFollowState": "",
 "CollectableSpawnState": "",
+"Constants": "",
 "Door": "",
 "DropperBehavior": "",
 "DungeonGenerator": "",

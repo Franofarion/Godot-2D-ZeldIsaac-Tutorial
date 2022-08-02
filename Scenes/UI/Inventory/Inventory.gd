@@ -49,6 +49,8 @@ func _input(_event: InputEvent) -> void:
   if Input.is_action_just_pressed("ui_down"):
     item_list.navigate_down()
 
+  if Input.is_action_just_pressed("ui_accept"):
+    item_list.use_item()
 
 ### SIGNAL RESPONSES ###
 

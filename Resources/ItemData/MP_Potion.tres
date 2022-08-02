@@ -15,7 +15,7 @@ region = Rect2( 16, 0, 16, 16 )
 [resource]
 script = ExtResource( 1 )
 damage_type = 1
-damage = -5
+damage = 2
 item_name = "Magic potion"
 description = "Heal for 5 Magic points"
 price = 10

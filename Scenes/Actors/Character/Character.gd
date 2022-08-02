@@ -6,6 +6,9 @@ class_name Character
 
 #### BUILT-IN ####
 
+func _ready() -> void:
+	var __ = EVENTS.connect("item_used", self, "_on_item_used")
+
 func _input(_event: InputEvent) -> void:
 	# moving_direction compute
 	var dir = Vector2(
@@ -56,3 +59,16 @@ func _on_hp_changed(new_hp: int) -> void:
 	._on_hp_changed(new_hp)
 
 	EVENTS.emit_signal("character_hp_changed", hp)
+
+
+func _on_mp_changed(new_mp: int) -> void:
+	._on_mp_changed(new_mp)
+
+	EVENTS.emit_signal("character_mp_changed", mp)
+
+
+func _on_item_used(item_data: ItemData) -> void:
+	if item_data.damage_type == Constants.DAMAGE_TYPE.HP:
+		set_hp(hp - item_data.damage)
+	if item_data.damage_type == Constants.DAMAGE_TYPE.MP:
+		set_mp(mp - item_data.damage)
